@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Prospecção de Clientes</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos customizados para aplicar a fonte Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Garante o fundo escuro mesmo incorporado */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md mx-auto p-8 bg-gray-800 rounded-2xl shadow-2xl">
+        
+        <!-- Seção do Cabeçalho -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-cyan-400">Gerador de Leads</h1>
+            <p class="text-gray-400 mt-2">Encontre seus próximos clientes no Instagram.</p>
+        </div>
+
+        <!-- Formulário de Prospecção -->
+        <form id="prospecting-form">
+            <div class="space-y-6">
+                <!-- Campo de Nicho com Estilo Corrigido -->
+                <div>
+                    <label for="niche" class="block text-sm font-medium text-gray-300 mb-2">1. Defina o nicho ou profissão</label>
+                    <input type="text" id="niche" name="niche"
+                           class="w-full bg-gray-700 text-white border-2 border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200"
+                           placeholder="Ex: nutricionista, advogado, arquiteto" required>
+                </div>
+                
+                <!-- Campo de Localização com Estilo Corrigido -->
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-300 mb-2">2. Segmente por local (Opcional)</label>
+                    <input type="text" id="location" name="location"
+                           class="w-full bg-gray-700 text-white border-2 border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200"
+                           placeholder="Ex: São Paulo, Florianópolis">
+                </div>
+            </div>
+
+            <!-- Botão de Envio com Borda Reforçada -->
+            <div class="mt-8">
+                <button type="submit"
+                        class="w-full bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-bold py-3 px-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 ease-in-out border-4 border-cyan-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">
+                    🚀 Encontrar Clientes no Google
+                </button>
+            </div>
+        </form>
+        
+        <!-- Rodapé/Créditos -->
+        <div class="text-center mt-8">
+            <p class="text-xs text-gray-500">Ferramenta exclusiva do Método I.M.P.A.C.T.O.</p>
+        </div>
+    </div>
+
+    <script>
+        // Pega o elemento do formulário do DOM
+        const prospectingForm = document.getElementById('prospecting-form');
+
+        // Adiciona um "ouvinte" de evento de 'submit' (envio) ao formulário
+        prospectingForm.addEventListener('submit', function(event) {
+            // Previne o comportamento padrão do formulário, que é recarregar a página
+            event.preventDefault();
+
+            // Pega os valores dos campos de input
+            const niche = document.getElementById('niche').value.trim();
+            const location = document.getElementById('location').value.trim();
+
+            // A URL base da busca do Google
+            const googleSearchBaseUrl = 'https://www.google.com/search?q=';
+            
+            // Constrói a consulta de busca
+            let searchQuery = `site:instagram.com "${niche}"`;
+
+            // Se uma localização foi informada, adiciona à busca
+            if (location) {
+                searchQuery += ` "${location}"`;
+            }
+
+            // Codifica a consulta para ser segura para uma URL
+            const encodedQuery = encodeURIComponent(searchQuery);
+
+            // Cria a URL final completa
+            const finalUrl = googleSearchBaseUrl + encodedQuery;
+
+            // Abre a URL de busca do Google em uma nova aba.
+            // O '_blank' é o parâmetro que garante a abertura em nova guia
+            // em todos os dispositivos (desktop, tablet, celular).
+            window.open(finalUrl, '_blank');
+        });
+    </script>
+
+</body>
+</html>
