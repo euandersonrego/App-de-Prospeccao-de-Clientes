@@ -1,23 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Prospecção de Clientes</title>
-    <!-- Tailwind CSS for styling -->
+    <title>Central de Prospecção I.M.P.A.C.T.O.</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .hidden { display: none; }
+        .tab-button.active {
+            background-color: #3b82f6; /* blue-600 */
+            color: white;
+        }
+        #password-overlay { background-color: rgba(17, 24, 39, 0.95); }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-    <!-- Camada de Senha -->
-    <div id="password-overlay" class="absolute inset-0 bg-gray-900 bg-opacity-95 flex items-center justify-center z-50">
+    <!-- Camada de Senha (Visível por padrão) -->
+    <div id="password-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-95 flex items-center justify-center z-50 p-4">
         <div class="w-full max-w-sm p-8 bg-white rounded-2xl shadow-2xl text-center">
             <h2 class="text-2xl font-bold text-gray-800">Acesso Restrito</h2>
             <p class="text-gray-500 mt-2 mb-4">Insira a senha de aluno para aceder à ferramenta.</p>
@@ -28,35 +36,107 @@
     </div>
 
     <!-- Conteúdo Principal do App (Inicialmente Oculto) -->
-    <div id="app-content" class="w-full max-w-md mx-auto p-8 bg-white rounded-2xl shadow-2xl hidden">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-blue-600">Gerador de Leads</h1>
-            <p class="text-gray-500 mt-2">Encontre seus próximos clientes no Instagram.</p>
-        </div>
-        <div class="space-y-6">
-            <div>
-                <label for="niche" class="block text-sm font-medium text-gray-700 mb-2">1. Defina o nicho ou profissão</label>
-                <input type="text" id="niche" class="w-full bg-gray-50 text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500" placeholder="Ex: nutricionista, advogado, arquiteto">
+    <div id="app-content" class="hidden w-full h-full">
+        <div class="container mx-auto max-w-4xl p-4 sm:p-6">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900">Central de Prospecção <span class="text-blue-600">I.M.P.A.C.T.O.</span></h1>
+                <p class="text-md text-gray-600 mt-2">O seu arsenal completo para encontrar e qualificar clientes.</p>
+            </header>
+
+            <!-- Abas de Navegação -->
+            <div class="mb-6 bg-gray-200 p-2 rounded-xl flex space-x-2">
+                <button class="tab-button flex-1 py-2 px-4 rounded-lg font-semibold transition-colors active" data-tab="radar">Radar de Clientes</button>
+                <button class="tab-button flex-1 py-2 px-4 rounded-lg font-semibold transition-colors" data-tab="recipes">Receitas de Prospecção</button>
+                <button class="tab-button flex-1 py-2 px-4 rounded-lg font-semibold transition-colors" data-tab="tools">Ferramentas Essenciais</button>
             </div>
-            <div>
-                <label for="location" class="block text-sm font-medium text-gray-700 mb-2">2. Segmente por local (Opcional)</label>
-                <input type="text" id="location" class="w-full bg-gray-50 text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500" placeholder="Ex: São Paulo, Florianópolis">
+
+            <!-- Conteúdo das Abas -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <!-- Aba 1: Radar de Clientes -->
+                <div id="radar" class="tab-content">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Radar de Clientes</h2>
+                    <p class="text-gray-600 mb-6">Insira o nicho e a cidade para encontrar clientes em potencial em diferentes plataformas.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="niche" class="block text-sm font-medium text-gray-700 mb-1">Nicho ou Serviço</label>
+                            <input type="text" id="niche" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Ex: Dentista, Restaurante, Advogado">
+                        </div>
+                        <div>
+                            <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Cidade (Opcional)</label>
+                            <input type="text" id="location" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Ex: São Paulo">
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <button class="search-btn bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2" data-platform="instagram">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </button>
+                        <button class="search-btn bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2" data-platform="google-maps">
+                            <i class="fas fa-map-marker-alt"></i> Google Maps
+                        </button>
+                        <button class="search-btn bg-blue-800 hover:bg-blue-900 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2" data-platform="facebook">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                        <button class="search-btn bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2" data-platform="linkedin">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Aba 2: Receitas de Prospecção -->
+                <div id="recipes" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Receitas de Prospecção</h2>
+                    <p class="text-gray-600 mb-6">Use estes prompts de busca avançada para encontrar oportunidades únicas.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="https://www.google.com/search?q=%22preciso+de+gestor+de+tr%C3%A1fego%22+site%3Ainstagram.com+OR+site%3Afacebook.com" target="_blank" class="block p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border">
+                            <h3 class="font-bold text-gray-800">"Preciso de Gestor"</h3>
+                            <p class="text-sm text-gray-600">Encontre posts de pessoas que pedem ajuda com tráfego.</p>
+                        </a>
+                        <a href="https://www.google.com/search?q=%22procurando+gestor+de+tr%C3%A1fego%22" target="_blank" class="block p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border">
+                            <h3 class="font-bold text-gray-800">"Procurando Gestor"</h3>
+                            <p class="text-sm text-gray-600">Encontre vagas e oportunidades diretas.</p>
+                        </a>
+                        <a href="https://www.google.com/search?q=intext%3A%22desenvolvido+por%22+advogado+%22sao+paulo%22+-site" target="_blank" class="block p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border">
+                            <h3 class="font-bold text-gray-800">Empresas com Site Simples</h3>
+                            <p class="text-sm text-gray-600">Encontre negócios que investiram pouco em marketing digital.</p>
+                        </a>
+                        <a href="https://www.facebook.com/ads/library/" target="_blank" class="block p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border">
+                            <h3 class="font-bold text-gray-800">Análise de Concorrentes</h3>
+                            <p class="text-sm text-gray-600">Veja quem já está a anunciar (e quem não está) no seu nicho.</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Aba 3: Ferramentas Essenciais -->
+                <div id="tools" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Ferramentas Essenciais</h2>
+                    <p class="text-gray-600 mb-6">Links diretos para as ferramentas mais importantes do dia a dia de um gestor.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="https://www.facebook.com/ads/library/" target="_blank" class="block p-4 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200">
+                            <h3 class="font-bold text-blue-800">Biblioteca de Anúncios</h3>
+                            <p class="text-sm text-blue-700">Espie os anúncios de qualquer página.</p>
+                        </a>
+                        <a href="https://trends.google.com/" target="_blank" class="block p-4 bg-green-50 hover:bg-green-100 rounded-lg border border-green-200">
+                            <h3 class="font-bold text-green-800">Google Trends</h3>
+                            <p class="text-sm text-green-700">Analise tendências de busca.</p>
+                        </a>
+                        <a href="https://ads.google.com/home/tools/keyword-planner/" target="_blank" class="block p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg border border-yellow-200">
+                            <h3 class="font-bold text-yellow-800">Google Keyword Planner</h3>
+                            <p class="text-sm text-yellow-700">Encontre palavras-chave relevantes.</p>
+                        </a>
+                        <a href="https://www.similarweb.com/" target="_blank" class="block p-4 bg-indigo-50 hover:bg-indigo-100 rounded-lg border border-indigo-200">
+                            <h3 class="font-bold text-indigo-800">SimilarWeb</h3>
+                            <p class="text-sm text-indigo-700">Analise o tráfego de qualquer site.</p>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="mt-8">
-            <a href="#" id="search-button" target="_blank" rel="noopener noreferrer" class="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg">
-                🚀 Encontrar Clientes no Google
-            </a>
-        </div>
-        <div class="text-center mt-8">
-            <p class="text-xs text-gray-400">Ferramenta exclusiva do Método I.M.P.A.C.T.O.</p>
         </div>
     </div>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DE SENHA ---
-            const correctPassword = "IMPACTO2025"; // A senha secreta
+            const correctPassword = "IMPACTO2025";
             const passwordOverlay = document.getElementById('password-overlay');
             const passwordInput = document.getElementById('password-input');
             const passwordSubmit = document.getElementById('password-submit');
@@ -65,42 +145,72 @@
 
             function checkPassword() {
                 if (passwordInput.value === correctPassword) {
-                    passwordOverlay.style.display = 'none'; // Esconde a camada de senha
-                    appContent.style.display = 'block'; // Mostra o conteúdo do app
+                    passwordOverlay.classList.add('hidden');
+                    appContent.classList.remove('hidden');
                 } else {
-                    errorMessage.style.display = 'block'; // Mostra a mensagem de erro
-                    passwordInput.focus();
+                    errorMessage.classList.remove('hidden');
                 }
             }
             passwordSubmit.addEventListener('click', checkPassword);
-            // Permite que o utilizador aperte Enter para submeter
-            passwordInput.addEventListener('keyup', function(event) {
-                if (event.key === "Enter") {
-                    checkPassword();
-                }
+            passwordInput.addEventListener('keyup', (event) => {
+                if (event.key === "Enter") { checkPassword(); }
             });
 
             // --- LÓGICA DO APP ---
-            const nicheInput = document.getElementById('niche');
-            const locationInput = document.getElementById('location');
-            const searchButton = document.getElementById('search-button');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-            function updateSearchLink() {
-                const niche = nicheInput.value.trim();
-                const location = locationInput.value.trim();
-                if (!niche) {
-                    searchButton.href = "#";
-                    return;
-                }
-                const googleSearchBaseUrl = 'https://www.google.com/search?q=';
-                let searchQuery = `site:instagram.com "${niche}"`;
-                if (location) { searchQuery += ` "${location}"`; }
-                searchButton.href = googleSearchBaseUrl + encodeURIComponent(searchQuery);
-            }
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const tabId = button.dataset.tab;
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
 
-            nicheInput.addEventListener('keyup', updateSearchLink);
-            locationInput.addEventListener('keyup', updateSearchLink);
-            updateSearchLink(); // Inicializa o link
+            const searchButtons = document.querySelectorAll('.search-btn');
+            searchButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const niche = document.getElementById('niche').value.trim();
+                    const location = document.getElementById('location').value.trim();
+                    const platform = button.dataset.platform;
+
+                    if (!niche) {
+                        alert('Por favor, defina um nicho primeiro.');
+                        return;
+                    }
+
+                    let url = '';
+                    const query = location ? `${niche} ${location}` : niche;
+
+                    switch (platform) {
+                        case 'instagram':
+                            url = `https://www.google.com/search?q=site:instagram.com "${query}"`;
+                            break;
+                        case 'google-maps':
+                            url = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+                            break;
+                        case 'facebook':
+                             url = `https://www.facebook.com/search/pages/?q=${encodeURIComponent(query)}`;
+                            break;
+                        case 'linkedin':
+                            url = `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(query)}`;
+                            break;
+                    }
+
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
         });
     </script>
 </body>
