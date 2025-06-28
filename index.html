@@ -11,94 +11,97 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilos customizados para aplicar a fonte Inter */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Garante o fundo escuro mesmo incorporado */
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md mx-auto p-8 bg-gray-800 rounded-2xl shadow-2xl">
-        
-        <!-- Seção do Cabeçalho -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-cyan-400">Gerador de Leads</h1>
-            <p class="text-gray-400 mt-2">Encontre seus próximos clientes no Instagram.</p>
+    <!-- Camada de Senha -->
+    <div id="password-overlay" class="absolute inset-0 bg-gray-900 bg-opacity-95 flex items-center justify-center z-50">
+        <div class="w-full max-w-sm p-8 bg-white rounded-2xl shadow-2xl text-center">
+            <h2 class="text-2xl font-bold text-gray-800">Acesso Restrito</h2>
+            <p class="text-gray-500 mt-2 mb-4">Insira a senha de aluno para aceder à ferramenta.</p>
+            <input type="password" id="password-input" class="w-full text-center bg-gray-100 text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="********">
+            <button id="password-submit" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Aceder</button>
+            <p id="error-message" class="text-red-500 text-sm mt-2 hidden">Senha incorreta. Tente novamente.</p>
         </div>
+    </div>
 
-        <!-- Formulário de Prospecção -->
-        <form id="prospecting-form">
-            <div class="space-y-6">
-                <!-- Campo de Nicho com Estilo Corrigido -->
-                <div>
-                    <label for="niche" class="block text-sm font-medium text-gray-300 mb-2">1. Defina o nicho ou profissão</label>
-                    <input type="text" id="niche" name="niche"
-                           class="w-full bg-gray-700 text-white border-2 border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200"
-                           placeholder="Ex: nutricionista, advogado, arquiteto" required>
-                </div>
-                
-                <!-- Campo de Localização com Estilo Corrigido -->
-                <div>
-                    <label for="location" class="block text-sm font-medium text-gray-300 mb-2">2. Segmente por local (Opcional)</label>
-                    <input type="text" id="location" name="location"
-                           class="w-full bg-gray-700 text-white border-2 border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200"
-                           placeholder="Ex: São Paulo, Florianópolis">
-                </div>
+    <!-- Conteúdo Principal do App (Inicialmente Oculto) -->
+    <div id="app-content" class="w-full max-w-md mx-auto p-8 bg-white rounded-2xl shadow-2xl hidden">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-blue-600">Gerador de Leads</h1>
+            <p class="text-gray-500 mt-2">Encontre seus próximos clientes no Instagram.</p>
+        </div>
+        <div class="space-y-6">
+            <div>
+                <label for="niche" class="block text-sm font-medium text-gray-700 mb-2">1. Defina o nicho ou profissão</label>
+                <input type="text" id="niche" class="w-full bg-gray-50 text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500" placeholder="Ex: nutricionista, advogado, arquiteto">
             </div>
-
-            <!-- Botão de Envio com Borda Reforçada -->
-            <div class="mt-8">
-                <button type="submit"
-                        class="w-full bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-bold py-3 px-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 ease-in-out border-4 border-cyan-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500">
-                    🚀 Encontrar Clientes no Google
-                </button>
+            <div>
+                <label for="location" class="block text-sm font-medium text-gray-700 mb-2">2. Segmente por local (Opcional)</label>
+                <input type="text" id="location" class="w-full bg-gray-50 text-gray-900 border-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500" placeholder="Ex: São Paulo, Florianópolis">
             </div>
-        </form>
-        
-        <!-- Rodapé/Créditos -->
+        </div>
+        <div class="mt-8">
+            <a href="#" id="search-button" target="_blank" rel="noopener noreferrer" class="block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg">
+                🚀 Encontrar Clientes no Google
+            </a>
+        </div>
         <div class="text-center mt-8">
-            <p class="text-xs text-gray-500">Ferramenta exclusiva do Método I.M.P.A.C.T.O.</p>
+            <p class="text-xs text-gray-400">Ferramenta exclusiva do Método I.M.P.A.C.T.O.</p>
         </div>
     </div>
 
     <script>
-        // Pega o elemento do formulário do DOM
-        const prospectingForm = document.getElementById('prospecting-form');
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- LÓGICA DE SENHA ---
+            const correctPassword = "IMPACTO2025"; // A senha secreta
+            const passwordOverlay = document.getElementById('password-overlay');
+            const passwordInput = document.getElementById('password-input');
+            const passwordSubmit = document.getElementById('password-submit');
+            const errorMessage = document.getElementById('error-message');
+            const appContent = document.getElementById('app-content');
 
-        // Adiciona um "ouvinte" de evento de 'submit' (envio) ao formulário
-        prospectingForm.addEventListener('submit', function(event) {
-            // Previne o comportamento padrão do formulário, que é recarregar a página
-            event.preventDefault();
+            function checkPassword() {
+                if (passwordInput.value === correctPassword) {
+                    passwordOverlay.style.display = 'none'; // Esconde a camada de senha
+                    appContent.style.display = 'block'; // Mostra o conteúdo do app
+                } else {
+                    errorMessage.style.display = 'block'; // Mostra a mensagem de erro
+                    passwordInput.focus();
+                }
+            }
+            passwordSubmit.addEventListener('click', checkPassword);
+            // Permite que o utilizador aperte Enter para submeter
+            passwordInput.addEventListener('keyup', function(event) {
+                if (event.key === "Enter") {
+                    checkPassword();
+                }
+            });
 
-            // Pega os valores dos campos de input
-            const niche = document.getElementById('niche').value.trim();
-            const location = document.getElementById('location').value.trim();
+            // --- LÓGICA DO APP ---
+            const nicheInput = document.getElementById('niche');
+            const locationInput = document.getElementById('location');
+            const searchButton = document.getElementById('search-button');
 
-            // A URL base da busca do Google
-            const googleSearchBaseUrl = 'https://www.google.com/search?q=';
-            
-            // Constrói a consulta de busca
-            let searchQuery = `site:instagram.com "${niche}"`;
-
-            // Se uma localização foi informada, adiciona à busca
-            if (location) {
-                searchQuery += ` "${location}"`;
+            function updateSearchLink() {
+                const niche = nicheInput.value.trim();
+                const location = locationInput.value.trim();
+                if (!niche) {
+                    searchButton.href = "#";
+                    return;
+                }
+                const googleSearchBaseUrl = 'https://www.google.com/search?q=';
+                let searchQuery = `site:instagram.com "${niche}"`;
+                if (location) { searchQuery += ` "${location}"`; }
+                searchButton.href = googleSearchBaseUrl + encodeURIComponent(searchQuery);
             }
 
-            // Codifica a consulta para ser segura para uma URL
-            const encodedQuery = encodeURIComponent(searchQuery);
-
-            // Cria a URL final completa
-            const finalUrl = googleSearchBaseUrl + encodedQuery;
-
-            // Abre a URL de busca do Google em uma nova aba.
-            // O '_blank' é o parâmetro que garante a abertura em nova guia
-            // em todos os dispositivos (desktop, tablet, celular).
-            window.open(finalUrl, '_blank');
+            nicheInput.addEventListener('keyup', updateSearchLink);
+            locationInput.addEventListener('keyup', updateSearchLink);
+            updateSearchLink(); // Inicializa o link
         });
     </script>
-
 </body>
 </html>
